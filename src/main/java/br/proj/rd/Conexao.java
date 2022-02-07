@@ -4,8 +4,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
-	private String url = "jdbc:mysql://localhost:3306/crud";
-	private String username = "root";
+	private String url = "jdbc:mysql://localhost:3306/aplicacoes_web";
+	private String username = "admin";
 	private String password = "admin";
 	private static Connection connection = null;
 	private static Conexao instance = null;

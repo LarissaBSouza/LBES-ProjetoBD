@@ -1,58 +1,66 @@
 package br.proj.rd;
 
 public class User {
-	
-	private Integer id;
+
+	private int id;
 	private String nome;
-	private String pais;
 	private String email;
-
-	public User(String nome, String pais, String email) {
+	private String pais;
+	
+	
+	public User(int id, String nome, String email, String pais) {
+		this.id = id;
 		this.nome = nome;
-		this.pais = pais;
 		this.email = email;
+		this.pais = pais;
 	}
 	
 
-	public User(String nome2, String email2) {
-		// TODO Auto-generated constructor stub
+	public User(String nome, String email, String pais) {
+		this.nome = nome;
+		this.email = email;
+		this.pais = pais;
 	}
 
 
-	public void setId(Integer id) {
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public Integer getId() {
-		return this.id;
+
+
+	public String getNome() {
+		return nome;
 	}
-	
+
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public String getNome() {
-		return this.nome;
+
+
+	public String getEmail() {
+		return email;
 	}
-	
+
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public String getEmail() {
-		return this.email;
+
+
+	public String getPais() {
+		return pais;
 	}
-	
+
+
 	public void setPais(String pais) {
 		this.pais = pais;
 	}
 	
-	public String getPais() {
-		return this.pais;
-	}
 	
-	public String toString() {
-		return this.id + " - " + this.nome + " - " + this.email + " - " + this.pais; 
-	}
 }
-

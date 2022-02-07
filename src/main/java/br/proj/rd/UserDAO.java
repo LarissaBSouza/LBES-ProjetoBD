@@ -5,60 +5,61 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+import java.util.List;
 
 public class UserDAO {
-	
+
 	public UserDAO() {
 
 	}
 	
-	public void addUser(User abobrinhaUser) {
+	public void inserir(User user) {
 		Conexao c = Conexao.getInstance();
 		Connection con = c.getConnection();
 		
 		try {
-			PreparedStatement p = con.prepareStatement("insert into users (name, email, country) values (?, ?)");
-			p.setString(1, abobrinhaUser.getNome());
-			p.setString(2, abobrinhaUser.getEmail());
-			p.setString(3, abobrinhaUser.getPais());
+			PreparedStatement p = con.prepareStatement("insert into users (nome, email, pais) values (?, ?, ?)");
+			p.setString(1, user.getNome());
+			p.setString(2, user.getEmail());
+			p.setString(3, user.getPais());
 			System.out.println(p);
 			p.executeUpdate();
 			System.out.println("Comando executado");
 			p.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
-	public ArrayList<User> getListUser(){
+	public List<User> consultar(){
 		Conexao c = Conexao.getInstance();
 		Connection con = c.getConnection();
-		ArrayList<User> lista = new ArrayList<User>();
+		List<User> usuarios = new ArrayList<User>();
+		
 		try {
 			PreparedStatement p = con.prepareStatement("select * from users");
-			ResultSet r = p.executeQuery();			
+			ResultSet r = p.executeQuery();
 			
 			while (r.next()) {
-				Integer id = r.getInt("id");
-				String nome = r.getString("name");
+				int id = r.getInt("id");
+				String nome = r.getString("nome");
 				String email = r.getString("email");
-				User u = new User(nome, email);
-				u.setId(id);
-				lista.add(u);
+				String pais = r.getString("pais");
+				User user = new User(nome, email, pais);
+				user.setId(id);
+				usuarios.add(user);
 			}
 			r.close();
 			p.close();
+			con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return lista;
+		return usuarios;
 	}
 	
-	public void removeUser(Integer id) {
+	public void deletar(int id) {
 		Conexao c = Conexao.getInstance();
 		Connection con = c.getConnection();
 		
@@ -69,22 +70,22 @@ public class UserDAO {
 			p.executeUpdate();
 			System.out.println("Comando executado");
 			p.close();
+			con.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	//public void updateUser(Integer id, String newName) {
-	public void updateUser(User updateUser) {
+	public void alterar(int id, String nome, String email, String pais ) {
 		Conexao c = Conexao.getInstance();
 		Connection con = c.getConnection();
 		
 		try {
-			PreparedStatement p = con.prepareStatement("update users set name = ?, email = ? where id = ?");
-			p.setString(1, updateUser.getNome());
-			p.setString(2, updateUser.getEmail());
-			p.setInt(3, updateUser.getId());
+			PreparedStatement p = con.prepareStatement("update users set nome = ?, email = ?, pais = ? where id = ?");
+			p.setString(1, nome);
+			p.setString(2, email);
+			p.setString(3, pais);
+			p.setInt(4, id);
 			System.out.println(p);
 			p.executeUpdate();
 			System.out.println("Comando executado");
@@ -94,33 +95,32 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
-		
-	public User buscarUser(Integer id) {
+	
+	
+	public User consultarUser(int id) {
 		Conexao c = Conexao.getInstance();
 		Connection con = c.getConnection();
-		User u = null;
+		User user = null;
+		
 		try {
 			PreparedStatement p = con.prepareStatement("select * from users where id = ?");
 			p.setInt(1, id);
-			ResultSet r = p.executeQuery();			
-			
+			ResultSet r = p.executeQuery();	
 			
 			while (r.next()) {
-				@SuppressWarnings("unused")
-				Integer id2 = r.getInt("id");
-				String nome = r.getString("name");
+				int id2 = r.getInt("id");
+				String nome = r.getString("nome");
 				String email = r.getString("email");
-				u = new User(nome, email);
-				u.setId(id);
+				String pais = r.getString("pais");
+				user = new User(nome, email, pais);
+				user.setId(id2);
 			}
 			r.close();
 			p.close();
+			con.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return u;
+		return user;
 	}
-	
-
 }
